@@ -4,7 +4,12 @@
 
     const messageClass = message.who === sender ? "sent" : "received";
 
-    const avatar = `https://avatars.dicebear.com/api/initials/${message.who}.svg`;
+    let avatar;
+    if (message.who === 'shekh') {
+        avatar = '/tom_dp.png';
+    } else {
+        avatar = '/jerry_dp.png';
+    }
 
     const ts = new Date(message.when);
 </script>
@@ -17,3 +22,5 @@
         <time>{ts.toLocaleTimeString()}</time>
     </div>
 </div>
+
+

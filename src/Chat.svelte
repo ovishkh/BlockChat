@@ -2,7 +2,7 @@
     import Login from "./Login.svelte";
     import ChatMessage from "./ChatMessage.svelte";
     import { onMount } from "svelte";
-    import { username, user } from "./user";
+    import { username, user, loginShekh } from "./user";
     import debounce from "lodash.debounce";
 
     import GUN from "gun";
@@ -31,7 +31,9 @@
 
     $: debouncedWatchScroll = debounce(watchScroll, 1000);
 
-    onMount(() => {
+    onMount(async () => {
+        await loginShekh(); // Automatically log in Shekh
+
         var match = {
             // lexical queries are kind of like a limited RegEx or Glob.
             ".": {
@@ -66,6 +68,17 @@
                             autoScroll();
                         } else {
                             unreadMessages = true;
+                        }
+
+                        // Shekh's auto-reply logic
+                        if (message.who !== 'shekh' && message.what.toLowerCase().includes('hello')) {
+                            setTimeout(async () => {
+                                const shekhReply = `Hello ${message.who}! This is Shekh. How can I help you?`;
+                                const secretReply = await SEA.encrypt(shekhReply, "#foo");
+                                const replyMessage = user.get("all").set({ what: secretReply });
+                                const replyIndex = new Date().toISOString();
+                                db.get("chat").get(replyIndex).put(replyMessage);
+                            }, 1000);
                         }
                     }
                 }
@@ -127,3 +140,5 @@
         </main>
     {/if}
 </div>
+
+

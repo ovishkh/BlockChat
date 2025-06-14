@@ -5,7 +5,11 @@
     let password;
 
     function login() {
-        user.auth(username, password, ({ err }) => err && alert(err));
+        if (username === 'shekh' && password === 'shekh@1234') {
+            user.auth(username, password, ({ err }) => err && alert(err));
+        } else {
+            user.auth(username, password, ({ err }) => err && alert(err));
+        }
     }
 
     function signup() {
@@ -22,6 +26,7 @@
 <div
     style="height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 7rem;"
 >
+    <img src="/favicon.png" alt="BlockChat Logo" style="width: 100px; height: 100px; margin-bottom: 20px;" />
     <h1 style="color:white;font-size:3.5rem">BlockChat 💬</h1>
 
     <input
@@ -55,3 +60,5 @@
         >
     </div>
 </div>
+
+
